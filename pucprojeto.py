@@ -1,15 +1,50 @@
 import os
 import time
+import json
+import copy
+
 decoracao = "=========================================================="
+
+arquivo = 'semana7.json'
 
 class Operacoes:
     def __init__(self):
         self.legenda = { 1: "estudante(s)", 2: "professor(a/es)" }
-        self.lista = { 1: [], 2: [] }
+        self.lista = self.carregar_lista()
+        self.lixo = copy.copy(self.carregar_lista())
 
+    def carregar_lista(self):
+        try:
+            if os.path.exists(arquivo):
+                with open(arquivo, 'r') as f:
+                    loaded_data = json.load(f)
+                    loaded_data = {int(key): value for key, value in loaded_data.items()}  
+                    return loaded_data
+            else:
+                return {1: [], 2: []}
+        except json.JSONDecodeError:
+            print('Erro ao carregar arquivo.')
+            return {1: [], 2: []}
+
+    def salvar_lista(self):
+        with open(arquivo, 'w') as f:
+            json.dump(self.lista, f)
+
+    def Lixo(self, decisao):
+        print(f"=========================LIXO=============================")
+        if self.lixo[decisao]:
+            for item in self.lixo[decisao]:
+                print(item)
+            input('Aperte ENTER para sair. \n' + decoracao)
+            return
+        else:
+            print("O lixo está vazio.")
+            input('Aperte ENTER para sair. \n' + decoracao)
+            return
+            
     def incluir(self, decisao): 
-        os.system("cls")
-        while True:
+        while True: 
+            os.system("cls")
             print(f"=========================INCLUIR==========================")
             if not self.lista[decisao]:
                 print(f"Não há {self.legenda[decisao]} cadastrado.")
@@ -21,7 +56,9 @@ class Operacoes:
                 cpf = int(input("Digite seu cpf:"))
                 self.lista[decisao].append({'codigo': codigo, 'nome': nome, 'cpf': cpf})
                 print(f"Adicionado a lista com sucesso.: {codigo, nome, cpf}")
+                self.salvar_lista()
                 input("Aperte ENTER para sair.\n" + decoracao)
+                os.system("cls")
                 return
             else:
                 try:
@@ -34,7 +71,9 @@ class Operacoes:
                     cpf = int(input("Digite seu cpf:"))
                     self.lista[decisao].append({'codigo': codigo,'nome': nome, 'cpf': cpf})
                     print(f"Adicionado a lista com sucesso.: {codigo, nome, cpf,}")
+                    self.salvar_lista()
                     input("Aperte ENTER para sair.\n" + decoracao)
+                    os.system("cls")
                     return
                 except ValueError or KeyError:
                     print('São apenas permitidos número.' +
@@ -46,42 +85,47 @@ class Operacoes:
         os.system("cls")
         while True:
             print("=========================EXCLUIR==========================")
-            if not self.lista[decisao]:
+            if not self.carregar_lista()[decisao]:
                 print(f"Não há {self.legenda[decisao]} para excluir")
                 input("Aperte ENTER para sair.\n" + decoracao)
                 return
             os.system('cls')                
             print("=========================EXCLUIR==========================")
             print(f"Lista de {self.legenda[decisao]}:")
-            for item in self.lista[decisao]:
-                print(f"{item}")    
-            remover = (input(f"Escreva o codigo do {self.legenda[decisao]} que deseja excluir \n('s' para cancelar):"))
-            if remover.lower() == 's':
-                input("Aperte ENTER para sair.\n" + decoracao)
-                return
-            for elemento, item in enumerate(self.lista[decisao]):
-                if str(item['codigo']) == remover:
-                    del self.lista[decisao][elemento]
-                    print(f" {remover} removido com sucesso.")
+            for item in self.carregar_lista()[decisao]:
+                print(item)    
+            try:
+                remover = int((input(f"Escreva o codigo do {self.legenda[decisao]} que deseja excluir \n('0' para cancelar):")))
+                if remover == '0':
                     input("Aperte ENTER para sair.\n" + decoracao)
+                    self.salvar_lista()
                     return
-                else:
-                    print(f"Código {remover} não encontrado na lista.")
-                    input("Aperte ENTER para sair.\n" + decoracao)
-                    return
-         
+                for elemento, item in enumerate(self.carregar_lista()[decisao]):
+                    if item['codigo'] == remover:
+                        self.lixo = copy.copy(self.carregar_lista())
+                        del self.lista[decisao][elemento]
+                        print(f" {remover} removido com sucesso.")
+                        input("Aperte ENTER para sair.\n" + decoracao)
+                        self.salvar_lista()
+                        return
+                    else:
+                        print(f"Código {remover} não encontrado na lista.")
+                        input("Aperte ENTER para sair.\n" + decoracao)
+                        return
+            except ValueError:
+                print("Escolha um dos codigos na lista.")         
 
     def listar(self, decisao):
         os.system('cls')
         print("===========================LISTAR=========================")
-        if not self.lista[decisao]:
+        if not self.carregar_lista()[decisao]:
             print(f"Não há {self.legenda[decisao]} cadastrado")
             input("Aperte ENTER para sair.\n" + decoracao)
             return
-        else:   
+        else:
             print(f"Lista de {self.legenda[decisao]}:")
-            for item in self.lista[decisao]:
-                print(f"{item}")
+            for item in self.carregar_lista()[decisao]:
+                print(item)
             input("Aperte ENTER para sair.\n" + decoracao)
             return
 
@@ -106,39 +150,41 @@ class Operacoes:
             os.system('cls')                
             print("==========================EDITAR===========================")  
             print(f"Lista de {self.legenda[decisao]}:")
-            for item in self.lista[decisao]:
-                print(f"{item}")
-            editor = input(f"Qual {self.legenda[decisao]} deseja editar? \n('s' para cancelar.)")
-            if editor.lower() == 's':
+            for item in self.carregar_lista()[decisao]:
+                print(item)
+            editor = int(input(f"Qual {self.legenda[decisao]} deseja editar? \n('0' para cancelar.)"))
+            if editor == '0':
                 return
             for item in self.lista[decisao]:
-                if str(item['codigo']) == editor:
+                if item['codigo'] == editor:
                     print(""" 
 ==========================================================
 1. Editar nome.
 2. Editar cpf.
 ==========================================================              
-                                    """)        
-                parametro = int(input())
-                if parametro == 1:
-                    editar_nome = input("Digite o novo nome: ")
-                    item['nome'] = editar_nome
-                    print(f"Atualização feita com sucesso!")
-                    input("Aperte ENTER para sair.")
-                    os.system('cls')
-                    return
-                elif parametro == 2: 
-                    editar_cpf = input("Digite o novo cpf: ")
-                    item['cpf'] = editar_cpf
-                    print(f"Atualização feita com sucesso!")
-                    input("Aperte ENTER para sair.")
-                    os.system('cls')
-                    return
-                else:
-                    print("Opção inválida.")
-                    input("Aperte ENTER para sair.")
-                    os.system('cls')                
-                    return
+""")        
+                    parametro = int(input())
+                    if parametro == 1:
+                        editar_nome = input("Digite o novo nome: ")
+                        item['nome'] = editar_nome
+                        print(f"Atualização feita com sucesso!")
+                        input("Aperte ENTER para sair.")
+                        self.salvar_lista()
+                        os.system('cls')
+                        return
+                    elif parametro == 2: 
+                        editar_cpf = input("Digite o novo cpf: ")
+                        item['cpf'] = editar_cpf
+                        print(f"Atualização feita com sucesso!")
+                        input("Aperte ENTER para sair.")
+                        self.salvar_lista()
+                        os.system('cls')
+                        return
+                    else:
+                        print("Opção inválida.")
+                        input("Aperte ENTER para sair.")
+                        os.system('cls')                
+                        return
 class Menus:
     def __init__(self):
         self.operacoes = Operacoes()
@@ -148,15 +194,14 @@ class Menus:
             os.system("cls")
             raw_string = """
 =============================MENU DE OPERAÇÕES=============================
-1. Incluir.
-2. Listar.
-3. Atualizar.
-4. Excluir.
-5. Editar.
-6. Voltar ao menu principal.
+1.Incluir.
+2.Listar.
+3.Atualizar.
+4.Excluir.
+5.Lixo.
+6.Editar.
+7.Voltar ao menu principal.
 ============================================================================         
-              
-
 """
             try: 
                 print(raw_string)
@@ -164,15 +209,23 @@ class Menus:
                 match opcao:
                     case 1:
                         self.operacoes.incluir(decisao)
+                        os.system("cls")
                     case 2:
                         self.operacoes.listar(decisao)
+                        os.system("cls")
                     case 3:
                         self.operacoes.atualizar()
+                        os.system("cls")
                     case 4:
                         self.operacoes.excluir(decisao)
+                        os.system("cls")
                     case 5:
-                        self.operacoes.editar(decisao)
+                        os.system("cls")
+                        self.operacoes.Lixo(decisao)
                     case 6:
+                        os.system("cls")
+                        self.operacoes.editar(decisao)
+                    case 7:
                         os.system("cls")
                         return
                     case _:
