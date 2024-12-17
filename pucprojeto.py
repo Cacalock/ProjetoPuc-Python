@@ -1,78 +1,117 @@
 import os
 import time
 
-def main(): 
-    print(f"___________________MENU PRINCIPAL___________________")
-    print(f"1. Estudantes.")
-    print(f"2. Professores.")
-    print(f"3. Disciplinas.")
-    print(f"4. Turmas.")
-    print(f"5. Matriculas.")
-    print(f"6. Sair.")
-
-    
+def estudantes():
+    lista = []
     while True:
-      opcao = input("Escolha uma das opções: ")
-      if opcao == "1" or "2" or "3" or "4" or "5" or "6":
-        print(f"A opção escolhida foi {opcao}") 
-        if opcao == "6":
-          print("Saindo")
-          time.sleep(3)
-          quit()
-      mainname = opcao
-      if mainname == "1": 
-        mainname = "[ESTUDANTES]"
-      elif mainname == "2":
-        mainname = "[PROFESSORES]"
-      elif mainname == "3":
-        mainname = "[DISCIPLINAS]"
-      elif mainname == "4":
-        mainname = "[TURMAS]"
-      elif mainname == "5":
-        mainname = "[MATRICULAS]"
-      else:
-        mainname = "_"
-        print(f"Opção invalida.")
-        print(f"Escolha uma opção valida.")
-        time.sleep(3)
-        main()       
-      
+        os.system("cls")
+        raw_string = """
+___________________MENU DOS ESTUDANTES___________________
+1. Incluir.
+2. Listar.
+3. Atualizar.
+4. Excluir.
+5. Voltar oa menu principal. 
+        """
+        print(raw_string)
+        switch = int(input())
+        match switch:
+            case 1:
+                os.system("cls")
+                for nome in range(1):
+                    if lista == []:
+                        print("___________________INCLUIR___________________\n")
+                        print("Não há nenhum estudante cadastrado.")
+                        nome = input("Digite o nome de um novo estudante: ")
+                        lista.append(nome)
+                        print("___________________LISTAGEM___________________\n")
+                        print(nome)
+                    elif lista != []:
+                        print("___________________INCLUIR___________________\n")
+                        nome = input("Digite o nome de um novo estudante: ")
+                        lista.append(nome)
+                        print("___________________LISTAGEM___________________\n")
+                        print(nome)
+            case 2:
+                os.system("cls")
+                if lista == []:
+                    print("___________________LISTAGEM___________________\n"
+                    "Não há nada cadastrados")
+                    input("Aperte ENTER para sair.")
+                    estudantes()
+                else:
+                    print("___________________LISTAGEM___________________")
+                    for nome in (lista):
+                        print(nome)
 
-      print(f"___________________" + mainname + " MENU ___________________")
-      print(f"1. Incluir.")
-      print(f"2. Listar.")
-      print(f"3. Atualizar.")
-      print(f"4. Excluir.")
-      print(f"5. Voltar ao menu principal.")
-      menu2 = int(input("Escolha uma opção: "))
-      if menu2 <= 6:
-          print(f"Opção valida.")
-      else:
-        print(f"Opção invalida.")
-        main()
-        
-      match menu2:
-        case 1:
-          print(f"___________________INCLUIR___________________")
-          print(f"Carregando menu de incluir...")
-          os.system("pause")
-          break
-        case 2:
-          print(f"___________________LISTAR___________________")
-          print(f"Carregando menu de listar...")
-          os.system("pause")
-          break
-        case 3:
-          print(f"___________________ATUALIZAR___________________")
-          print(f"Carregando menu de atualização...")
-          os.system("pause")
-          break
-        case 4:
-          print(f"___________________EXCLUIR___________________")
-          print(f"Carregando menu de exclusão...")
-          os.system("pause")
-          break
-        case 5:
-            main()
+                    input("Aperte ENTER para sair.")
+            case 3:
+                os.system("cls")
+                print("___________________ATUALIZAR___________________\n")
+                print("atualizando")
+                time.sleep(2)
+                print("atuzalição feita com sucesso! \n" 
+                "Voltando ao menu anterior:")
+                time.sleep(2)
+                estudantes()
 
-main()
+            case 4:
+                os.system("cls")
+                print("___________________EXCLUIR___________________\n")
+                remover = input("Escreva o nome do estudante que deseja excluir:")
+                lista.remove(remover)    
+                print("Exclusão feita com sucesso")
+                time.sleep(2)
+                print(f"mostrando atualizacão:\n")
+                print("___________________LISTAGEM___________________")
+                for nome in (lista):
+                        print(nome)
+                input("Aperte ENTER para sair.")
+
+            case 5:
+                return
+
+def main():
+    os.system("cls")
+    raw_string ="""
+___________________MENU PRINCIPAL___________________
+1. Estudantes.
+2. Professores.
+3. Disciplinas.
+4. Turmas.
+5. Matriculas.
+6. Sair.
+"""
+    while True:
+        print(raw_string)
+        switch = int(input())
+        match switch:
+            case 1:
+                estudantes()
+
+            case 2:
+                print("___________________MENU DOS PROFESSORES___________________ \n"
+                "Em desenvolvimento.")
+                input("Aperte ENTER para sair.")
+
+
+            case 3:
+                print("___________________MENU DAS DISCIPLINAS___________________ \n"
+                "Em desenvolvimento.")
+                input("Aperte ENTER para sair.")
+
+            case 4:
+                print("___________________MENU DAS TURMAS___________________\n" 
+                "Em desenvolvimento.")
+                input("Aperte ENTER para sair.")
+            case 5:
+                print("___________________MENU DAS MATRICULAS___________________\n"
+                "Em desenvolvimento.")
+                input("Aperte ENTER para sair.")
+            case 6:
+                print("Saindo")
+                time.sleep(3)
+                quit()
+
+if __name__ == "__main__":
+    main()
