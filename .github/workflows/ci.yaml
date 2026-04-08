@@ -1,0 +1,31 @@
+on:
+    push:
+        branches:
+            - main
+            - 'feature/*'
+    pull_request:
+        branches:
+            - main
+
+jobs:
+    build-and-test:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout do código
+              uses: actions/checkout@v4
+
+            - name: Setup Python
+              uses: actions/setup-python@v5
+              with:
+                  python-version: '3.11'
+
+            - name: Instalar dependências
+              run: pip install -r requirements.txt
+
+            - name: Build Docker Image
+              run: docker build -t puc-app .
+
+            - name: Deploy para Produção
+              if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+              run: |
+                  echo "Fazendo o push"
