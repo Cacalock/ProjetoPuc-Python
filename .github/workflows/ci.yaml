@@ -1,3 +1,5 @@
+name: CI - Python Tests
+
 on:
     push:
         branches: ['main']
@@ -24,4 +26,5 @@ jobs:
 
             - name: Rodar testes com pytest
               run: |
-                  PYTHONPATH=. pytest -v
+                  export PYTHONPATH=.
+                  python -m pytest -v
