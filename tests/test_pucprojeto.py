@@ -1,5 +1,10 @@
+import sys
+import os
 from pucprojeto import Operacoes
 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from pucprojeto import Operacoes
 def test_inicializacao():
     op = Operacoes()
     assert op is not None
