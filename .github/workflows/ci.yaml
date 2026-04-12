@@ -1,4 +1,4 @@
-name: CI - Python Tests
+name: CI - Testes
 
 on:
     push:
@@ -24,7 +24,7 @@ jobs:
                   python -m pip install --upgrade pip
                   pip install -r requirements.txt
 
-            - name: Rodar testes com pytest
+            - name: Rodar testes
               run: |
                   export PYTHONPATH=.
                   python -m pytest -v
