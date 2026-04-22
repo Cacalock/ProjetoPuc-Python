@@ -20,7 +20,7 @@ def test_legenda_valida():
 
 def test_chaves_lista():
     op = Operacoes()
-    # Garante que existem as 5 categorias
+    # Garante que existem as 5 categorias definidas
     assert set(op.lista.keys()) == {1, 2, 3, 4, 5}
 
 def test_lixo_inicializacao():
