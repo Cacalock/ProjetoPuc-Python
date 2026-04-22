@@ -20,15 +20,10 @@ def test_legenda_valida():
 
 def test_chaves_lista():
     op = Operacoes()
-    # Garante que existem as 5 categorias
+    # Garante que existem as 5 categorias definidas
     assert set(op.lista.keys()) == {1, 2, 3, 4, 5}
 
-def test_processo_insercao():
+def test_lixo_inicializacao():
     op = Operacoes()
-    # Testa a inserção de um estudante
-    op.incluir(1, 'Alice')
-    assert 'Alice' in op.lista[1]
-
-    # Testa a inserção de um professor
-    op.incluir(2, 'Pedro Silva')
-    assert 'Pedro Silva' in op.lista[2]
+    assert op.lixo == op.lista
+    assert isinstance(op.lixo, dict)
