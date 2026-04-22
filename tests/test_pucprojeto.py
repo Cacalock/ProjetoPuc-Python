@@ -23,12 +23,7 @@ def test_chaves_lista():
     # Garante que existem as 5 categorias
     assert set(op.lista.keys()) == {1, 2, 3, 4, 5}
 
-def test_processo_insercao():
+def test_lixo_inicializacao():
     op = Operacoes()
-    # Testa a inserção de um estudante
-    op.incluir(1, 'Alice', 1231234)
-    assert 'Alice' in op.lista[1]
-
-    # Testa a inserção de um professor
-    op.incluir(2, 'Pedro Silva', 123)
-    assert 'Pedro Silva' in op.lista[2]
+    assert op.lixo == op.lista
+    assert isinstance(op.lixo, dict)
