@@ -26,9 +26,9 @@ def test_chaves_lista():
 def test_processo_insercao():
     op = Operacoes()
     # Testa a inserção de um estudante
-    op.inserir(1, 'Alice')
+    op.incluir(1, 'Alice')
     assert 'Alice' in op.lista[1]
 
     # Testa a inserção de um professor
-    op.inserir(2, 'Dr. Smith')
-    assert 'Pedro' in op.lista[2]
+    op.incluir(2, 'Pedro Silva')
+    assert 'Pedro Silva' in op.lista[2]
