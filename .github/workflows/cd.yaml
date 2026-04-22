@@ -25,3 +25,12 @@ jobs:
             - name: Push da imagem
               run: |
                   docker push ${{ secrets.DOCKER_USERNAME }}/pucprojeto:latest
+
+            - name: Notificação Discord (CD)
+              uses: sarisia/actions-status-discord@v1
+              if: always()
+              with:
+                  webhook: ${{ secrets.DISCORD_WEBHOOK }}
+                  title: 'Deploy Docker - Projeto PUC'
+                  description: 'Imagem enviada para o Docker Hub com status: ${{ job.status }}'
+                  color: 0x00ff00

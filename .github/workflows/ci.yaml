@@ -28,3 +28,12 @@ jobs:
               run: |
                   export PYTHONPATH=.
                   python -m pytest -v
+
+            - name: Notificação Discord (CI)
+              uses: sarisia/actions-status-discord@v1
+              if: always() # Importante: envia alerta mesmo se o teste falhar
+              with:
+                  webhook: ${{ secrets.DISCORD_WEBHOOK }}
+                  title: 'Relatório de Testes - Projeto PUC'
+                  description: 'Status do Job: ${{ job.status }}'
+                  color: 0x0000ff
