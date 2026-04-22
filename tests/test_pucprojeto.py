@@ -23,8 +23,12 @@ def test_chaves_lista():
     # Garante que existem as 5 categorias
     assert set(op.lista.keys()) == {1, 2, 3, 4, 5}
 
-def test_valores_iniciais():
+def test_processo_insercao():
     op = Operacoes()
-    # Garante que todas as categorias começam com 0
-    for chave in op.lista:
-        assert op.lista[chave] == 0
+    # Testa a inserção de um estudante
+    op.inserir(1, 'Alice')
+    assert 'Alice' in op.lista[1]
+
+    # Testa a inserção de um professor
+    op.inserir(2, 'Dr. Smith')
+    assert 'Pedro' in op.lista[2]
